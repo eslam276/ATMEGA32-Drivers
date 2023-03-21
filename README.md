@@ -10,4 +10,4 @@ MCAL Layer  ---> DIO  - PORT
 
 HAL  layer  ---> CLCD - KEYPAd
 
-libraray    ---> std_types - bit_math
+libraray    ---> std_types.h - BIT_math.h
