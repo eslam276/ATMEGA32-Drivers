@@ -7,7 +7,7 @@
 
 #include "EXTI_cfg.h"
 
-static pfFuncPtr EXTI_pfINTFunPtr[3] = {NULL};/*array of pointers to functions to hold ISR callback*/
+static void (*EXTI_pfINTFuncPtr[3]) = {NULL};/*array of pointers to functions to hold ISR callback*/
 
 void EXTI_voidInitInt0(void)
 {
@@ -164,12 +164,12 @@ uint8 EXTI_u8InterputStatus(uint8 Copy_u8IntNum, uint8 Copy_u8Status)
 	return Local_u8ErrorState;
 }
 
-uint8 EXTI_u8SetCallBack(uint8 Copy_u8Num, pfFuncPtr ptr)
+uint8 EXTI_u8SetCallBack(uint8 Copy_u8Num,  void (*Copy_pfFuncPtr)(void))
 {
 	uint8 Local_u8ErrorState = OK;
-	if(ptr != NULL)
+	if(Copy_pfFuncPtr != NULL)
 	{
-		EXTI_pfINTFunPtr[Copy_u8Num] = ptr;
+		EXTI_pfINTFuncPtr[Copy_u8Num] = Copy_pfFuncPtr;
 	}
 	else
 	{
@@ -182,24 +182,24 @@ uint8 EXTI_u8SetCallBack(uint8 Copy_u8Num, pfFuncPtr ptr)
 void __vector_1 (void) __attribute__((signal));
 void __vector_1 (void)
 {
-	if (EXTI_pfINTFunPtr[EXTI_u8INT0] != NULL)
+	if (EXTI_pfINTFuncPtr[EXTI_u8INT0] != NULL)
 	{
-		EXTI_pfINTFunPtr[EXTI_u8INT0]();
+		EXTI_pfINTFuncPtr[EXTI_u8INT0]();
 	}
 }
 void __vector_2 (void) __attribute__((signal));
 void __vector_2 (void)
 {
-	if (EXTI_pfINTFunPtr[EXTI_u8INT1] != NULL)
+	if (EXTI_pfINTFuncPtr[EXTI_u8INT1] != NULL)
 	{
-		EXTI_pfINTFunPtr[EXTI_u8INT1]();
+		EXTI_pfINTFuncPtr[EXTI_u8INT1]();
 	}
 }
 void __vector_3 (void) __attribute__((signal));
 void __vector_3 (void)
 {
-	if (EXTI_pfINTFunPtr[EXTI_u8INT2] != NULL)
+	if (EXTI_pfINTFuncPtr[EXTI_u8INT2] != NULL)
 	{
-		EXTI_pfINTFunPtr[EXTI_u8INT2]();
+		EXTI_pfINTFuncPtr[EXTI_u8INT2]();
 	}
 }
