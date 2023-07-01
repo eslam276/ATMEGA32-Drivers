@@ -17,4 +17,7 @@ typedef long double f96;
 
 typedef void (*pfFuncPtr)(void);
 
+
+/* REG 300 DATASHEET */
+
 #endif
