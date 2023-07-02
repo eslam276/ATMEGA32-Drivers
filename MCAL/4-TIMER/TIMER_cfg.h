@@ -8,7 +8,9 @@
 #define TIMERMODE    NORMALMODE
 
 
-#define TIMERCLOCK   DIVBY_8
+#define TIMER_CLOCK   DIVBY_64
+
+#define CTC_VALUE 250u 
 
 
 #define PRELOAD 128

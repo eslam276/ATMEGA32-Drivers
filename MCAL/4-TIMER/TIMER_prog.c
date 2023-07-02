@@ -1,10 +1,12 @@
 
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
+#include "defines.h"
+
+
 #include "TIMER_reg.h"
+#include "TIMER_private.h"
 #include "TIMER_cfg.h"
-
-
 #include "TIMER_interface.h"
 
 
@@ -12,30 +14,87 @@
 
 static uint16 counter ;
 
-void (*func)(void) ;
 
 
-void TIMER_voidActiveT0(void (*ptrf)(void))
+/* Global ARR of pointers to functions */
+
+static void (* TIMERS_pvCallBackFuncArr [8])(void) = {NULL} ;
+
+
+
+uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) )
 {
 
-    CLR_BIT(TCCR0,WGM00);
-    CLR_BIT(TCCR0,WGM01);
+    uint8 LOCAL_u8ErrorState = OK ;
 
-    TCCR0 &= 0b11111000;
-    TCCR0 |= DIVBY_8;
+    if (Copy_pvCallBackFunction != NULL)
+    {
+       TIMERS_pvCallBackFuncArr[Copy_u8TimerIntSource]= Copy_pvCallBackFunction ;
+    }
+    else
+    {
+        LOCAL_u8ErrorState = NOK ;
+    }
 
-    TCNT0 = PRELOAD;
-
-    SET_BIT(TIMSK,TOIE0);
 
 
 
-    counter = 0 ;
-    func = ptrf ;
+
+    return LOCAL_u8ErrorState ;
 
 }
 
 
+void TIMER0_voidInit(void)
+{
+
+    /* Waveform generation mode */
+
+    CLR_BIT(TCCR0,TCCR0_WGM00);
+    SET_BIT(TCCR0,TCCR0_WGM01);
+
+
+    /* Compare match output mode */
+
+    CLR_BIT(TCCR0,TCCR0_COM00);
+    CLR_BIT(TCCR0,TCCR0_COM01);
+
+
+    /* Set prescaler */
+
+    TCCR0 &= PRESCALER_MASK;
+    TCCR0 |= TIMER_CLOCK;
+
+    /* Set output comapre value */
+
+    OCR0 = CTC_VALUE ;
+
+
+    /* Output compare match interrupt enable */
+
+    SET_BIT(TIMSK,TIMSK_OCIE0);
+
+
+
+
+}
+
+
+
+
+
+
+
+
+/* 42 Datasheet vector table */
+
+
+
+
+
+
+
+/* ISR for TIMER 0 Overflow */
 
 void __vector_11(void)   __attribute((signal));
 
@@ -48,7 +107,39 @@ void __vector_11(void)
         counter = 0 ;
         TCNT0 = PRELOAD;
 
-        func();
+         TIMERS_pvCallBackFuncArr[TIMER0_OVF]();
+
+    }
+    
+}
+
+
+
+
+
+/* ISR for TIMER 0 Copmare match */
+
+void __vector_10 (void)   __attribute((signal));
+
+void __vector_10(void)
+{
+
+
+    counter++;
+    if (counter==1000)
+    {
+        
+        counter = 0 ;
+
+        if (TIMERS_pvCallBackFuncArr[TIMER0_COMP] != NULL)
+        {
+             TIMERS_pvCallBackFuncArr[TIMER0_COMP]();
+        }
+        
+       
+        
+
+       
 
     }
     
