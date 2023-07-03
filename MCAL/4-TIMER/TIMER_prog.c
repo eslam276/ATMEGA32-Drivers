@@ -48,16 +48,16 @@ uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Co
 void TIMER0_voidInit(void)
 {
 
-    /* Waveform generation mode */
+    /* Waveform generation mode : Fast PWM */
 
-    CLR_BIT(TCCR0,TCCR0_WGM00);
+    SET_BIT(TCCR0,TCCR0_WGM00);
     SET_BIT(TCCR0,TCCR0_WGM01);
 
 
     /* Compare match output mode */
 
     CLR_BIT(TCCR0,TCCR0_COM00);
-    CLR_BIT(TCCR0,TCCR0_COM01);
+    SET_BIT(TCCR0,TCCR0_COM01);
 
 
     /* Set prescaler */
@@ -65,20 +65,23 @@ void TIMER0_voidInit(void)
     TCCR0 &= PRESCALER_MASK;
     TCCR0 |= TIMER_CLOCK;
 
-    /* Set output comapre value */
-
-    OCR0 = CTC_VALUE ;
 
 
     /* Output compare match interrupt enable */
 
-    SET_BIT(TIMSK,TIMSK_OCIE0);
+    // SET_BIT(TIMSK,TIMSK_OCIE0);
 
 
 
 
 }
 
+
+
+void TIMER0_voidSetCompValue(uint8 Copy_u8Value)
+{
+    OCR0 = Copy_u8Value ;
+}
 
 
 

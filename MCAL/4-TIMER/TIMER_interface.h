@@ -18,11 +18,8 @@ void TIMER0_voidInit(void);
 
 uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) );
 
-
-
-
-
-
+ 
+void TIMER0_voidSetCompValue(uint8 Copy_u8Value);
 
 
 #endif
