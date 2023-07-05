@@ -22,6 +22,44 @@ static void (* TIMERS_pvCallBackFuncArr [8])(void) = {NULL} ;
 
 
 
+void TIMER1_voidInit(void)
+{
+    /* Conigure fast pwm mode */
+
+    SET_BIT(TCCR1A,TCCR1A_COM1A1);
+    CLR_BIT(TCCR1A,TCCR1A_COM1A0);
+
+
+    /* configure waveform generation mode */
+
+    CLR_BIT(TCCR1A,TCCR1A_WGM10);
+    SET_BIT(TCCR1A,TCCR1A_WGM11);
+    SET_BIT(TCCR1B,TCCR1B_WGM12);
+    SET_BIT(TCCR1B,TCCR1B_WGM13);
+
+    /* configure prescaler */
+
+    TCCR1B &= PRESCALER_MASK ;
+    TCCR1B |= DIVBY_8;
+
+    /* SET top value */
+
+    ICR1 = TIMER1_TOP_VALUE ;
+
+
+
+
+
+}
+
+
+void TIMER1_voidSetCompValue(uint8 Copy_u8Value)
+{
+    OCR1A = Copy_u8Value;
+}
+
+
+
 uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) )
 {
 

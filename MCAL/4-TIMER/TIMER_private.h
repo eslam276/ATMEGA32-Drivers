@@ -8,6 +8,7 @@
 
 #define PRESCALER_MASK      0b11111000
 
+
 #define DIVBY_8             2u
 #define DIVBY_64            3u
 

@@ -12,8 +12,10 @@
 
 #define CTC_VALUE 250u 
 
+#define TIMER1_TOP_VALUE 40000
 
 #define PRELOAD 128
+
 
 
 #endif
