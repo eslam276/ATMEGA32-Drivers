@@ -59,6 +59,17 @@ void TIMER1_voidSetCompValue(uint8 Copy_u8Value)
 }
 
 
+void TIMER1_voidSetTimerVal(uint16 Copy_u16Value)
+{
+	TCNT1 = Copy_u16Value;
+}
+
+uint16 TIMER1_u16GetTimerVal(void)
+{
+	return TCNT1 ;
+}
+
+
 
 uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) )
 {
