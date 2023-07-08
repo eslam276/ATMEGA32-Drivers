@@ -93,6 +93,10 @@ void TIMER1_voidInitICU(void)
     SET_BIT(TCCR1B,TCCR1B_ICES1);
 
 
+    /* ICU Interrupt enable*/
+    SET_BIT(TIMSK,TIMSK_TICIE1);
+
+
 }
 
 
@@ -243,6 +247,20 @@ void __vector_10(void)
     
 }
 
+
+
+/* ISR for TIMER 1 Capture event */
+
+void __vector_6 (void)   __attribute((signal));
+
+void __vector_6(void)
+{
+
+        if (TIMERS_pvCallBackFuncArr[TIMER1_CAPTURE] != NULL)
+        {
+             TIMERS_pvCallBackFuncArr[TIMER1_CAPTURE]();
+        }
+}
 
 
 

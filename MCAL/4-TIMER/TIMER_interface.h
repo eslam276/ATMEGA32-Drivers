@@ -8,7 +8,8 @@ typedef enum
 {
     TIMER0_OVF=0,
     TIMER0_COMP,
-    TIMER1_COMP
+    TIMER1_COMP,
+    TIMER1_CAPTURE
 
 }TIMERS_Int_Src_t;
 
