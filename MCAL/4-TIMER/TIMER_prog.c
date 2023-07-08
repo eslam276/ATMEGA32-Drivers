@@ -69,6 +69,52 @@ uint16 TIMER1_u16GetTimerVal(void)
 	return TCNT1 ;
 }
 
+void TIMER1_voidInitICU(void)
+{
+
+    /* Timer1 Normal mode */
+
+    CLR_BIT(TCCR1A,TCCR1A_WGM10);
+    CLR_BIT(TCCR1A,TCCR1A_WGM11);
+    CLR_BIT(TCCR1B,TCCR1B_WGM12);
+    CLR_BIT(TCCR1B,TCCR1B_WGM13);
+
+   
+
+
+    /* configure prescaler */
+
+    TCCR1B &= PRESCALER_MASK ;
+    TCCR1B |= TIMER_CLOCK;
+
+
+    /* Init Edge select*/
+
+    SET_BIT(TCCR1B,TCCR1B_ICES1);
+
+
+}
+
+
+void TIMER1_voidSelectIcuEdge(uint8 COPY_u8Edge)
+{
+    if (COPY_u8Edge == FALLING_EDGE )
+    {
+        CLR_BIT(TCCR1B,TCCR1B_ICES1);
+    }
+    else if (COPY_u8Edge == RISSING_EDGE)
+    {
+        SET_BIT(TCCR1B,TCCR1B_ICES1);
+    }
+    
+    
+}
+
+uint16 TIMER1_voidReadIcuVal(void)
+{
+    return ICR1;
+}
+
 
 
 uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) )
