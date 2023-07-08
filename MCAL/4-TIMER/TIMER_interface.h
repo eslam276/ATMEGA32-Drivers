@@ -28,6 +28,9 @@ void TIMER0_voidSetCompValue(uint8 Copy_u8Value);
 void TIMER1_voidInit(void);
 void TIMER1_voidSetCompValue(uint8 Copy_u8Value);
 
+void TIMER1_voidSetTimerVal(uint16 Copy_u16Value);
+uint16 TIMER1_u16GetTimerVal(void);
+
 
 
 
