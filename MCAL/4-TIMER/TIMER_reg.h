@@ -25,8 +25,9 @@
 #define TCCR1A_WGM10	0                               /*Waveform generation mode bit1*/
 
 
-#define TCCR1B			*((volatile uint8*)0x4E)         /*Timer1 control registerB*/
-#define TCCR1B_ICES1	6                                /*Waveform generation mode bit3*/
+#define TCCR1B			*((volatile uint8*)0x4E)         /*Timer1 control register*/
+#define TCCR1B_ICNC1	7                                /* Input capture noise cancler*/
+#define TCCR1B_ICES1	6                                /*Input capture edge select */
 #define TCCR1B_WGM13	4                                /*Waveform generation mode bit3*/
 #define TCCR1B_WGM12	3                                /*Waveform generation mode bit2*/
 #define TCCR1B_CS12		2                                /*Prescaler bit 2*/

@@ -13,8 +13,8 @@
 #define DIVBY_64            3u
 
 
-#define FALLING_EDGE        0u
-#define RISSING_EDGE        1u
+#define FALLING_EDGE        1u
+#define RISSING_EDGE        2u
 
 
 

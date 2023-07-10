@@ -5,6 +5,13 @@
 
 #include "TIMER_private.h"
 
+
+
+#define ICU_u8_TRIGGER_SRC  RISSING_EDGE
+
+
+#define ICU_u8_INT_INIT_STATE  ENABLE
+
 #define TIMERMODE    NORMALMODE
 
 

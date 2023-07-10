@@ -69,7 +69,7 @@ uint16 TIMER1_u16GetTimerVal(void)
 	return TCNT1 ;
 }
 
-void TIMER1_voidInitICU(void)
+void ICU_voidInit(void)
 {
 
     /* Timer1 Normal mode */
@@ -88,9 +88,26 @@ void TIMER1_voidInitICU(void)
     TCCR1B |= TIMER_CLOCK;
 
 
-    /* Init Edge select*/
+
+
+
+
+
+
+
+ 
+
+#if ICU_u8_TRIGGER_SRC == RISSING_EDGE
+
+
+    SET_B IT(TCCR1B,TCCR1B_ICES1);
+
+#elif ICU_u8_TRIGGER_SRC == FALLING_EDGE
 
     SET_BIT(TCCR1B,TCCR1B_ICES1);
+
+#else
+#error wrong ICU_u8_TRIGGER_SRC configratioon
 
 
     /* ICU Interrupt enable*/
@@ -100,13 +117,13 @@ void TIMER1_voidInitICU(void)
 }
 
 
-void TIMER1_voidSelectIcuEdge(uint8 COPY_u8Edge)
+uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc)
 {
-    if (COPY_u8Edge == FALLING_EDGE )
+    if (Copy_u8TriggerSrc == FALLING_EDGE )
     {
         CLR_BIT(TCCR1B,TCCR1B_ICES1);
     }
-    else if (COPY_u8Edge == RISSING_EDGE)
+    else if (Copy_u8TriggerSrc == RISSING_EDGE)
     {
         SET_BIT(TCCR1B,TCCR1B_ICES1);
     }
@@ -114,11 +131,24 @@ void TIMER1_voidSelectIcuEdge(uint8 COPY_u8Edge)
     
 }
 
-uint16 TIMER1_voidReadIcuVal(void)
+uint16 ICU_voidGetVal(void)
 {
     return ICR1;
 }
 
+
+
+void ICU_voidIntEnable(void)
+{
+
+    SET_BIT(TIMSK,TIMSK_TICIE1);
+
+}
+void ICU_voidIntDisable(void)
+{
+
+    CLR_BIT(TIMSK,TIMSK_TICIE1);
+}
 
 
 uint8 TIMERS_u8SetCallBack( TIMERS_Int_Src_t Copy_u8TimerIntSource ,  void (* Copy_pvCallBackFunction )(void) )
