@@ -108,6 +108,7 @@ void ICU_voidInit(void)
 
 #else
 #error wrong ICU_u8_TRIGGER_SRC configratioon
+#endif
 
 
     /* ICU Interrupt enable*/
