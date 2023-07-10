@@ -104,15 +104,22 @@ void ICU_voidInit(void)
 
 #elif ICU_u8_TRIGGER_SRC == FALLING_EDGE
 
-    SET_BIT(TCCR1B,TCCR1B_ICES1);
+    CLR_BIT(TCCR1B,TCCR1B_ICES1);
 
 #else
 #error wrong ICU_u8_TRIGGER_SRC configratioon
 #endif
 
 
-    /* ICU Interrupt enable*/
+#if ICU_u8_INT_INIT_STATE == ENABLE
     SET_BIT(TIMSK,TIMSK_TICIE1);
+
+#elif ICU_u8_INT_INIT_STATE == DISABLE
+    CLR_BIT(TIMSK,TIMSK_TICIE1);
+
+#else 
+#error wrong ICU_u8_INT_INIT_STATE CFG
+#endif
 
 
 }
@@ -120,6 +127,8 @@ void ICU_voidInit(void)
 
 uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc)
 {
+
+    uint8 Local_u8ErrorState = OK ;
     if (Copy_u8TriggerSrc == FALLING_EDGE )
     {
         CLR_BIT(TCCR1B,TCCR1B_ICES1);
@@ -128,8 +137,12 @@ uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc)
     {
         SET_BIT(TCCR1B,TCCR1B_ICES1);
     }
+    else
+    {
+        Local_u8ErrorState = NOK;
+    }
     
-    
+    return Local_u8ErrorState ;
 }
 
 uint16 ICU_voidGetVal(void)
@@ -287,9 +300,9 @@ void __vector_6 (void)   __attribute((signal));
 void __vector_6(void)
 {
 
-        if (TIMERS_pvCallBackFuncArr[TIMER1_CAPTURE] != NULL)
+        if (TIMERS_pvCallBackFuncArr[TIMER1_ICU] != NULL)
         {
-             TIMERS_pvCallBackFuncArr[TIMER1_CAPTURE]();
+             TIMERS_pvCallBackFuncArr[TIMER1_ICU]();
         }
 }
 
