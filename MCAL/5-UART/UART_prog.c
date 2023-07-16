@@ -43,7 +43,7 @@ void UART_voidInit(void)
 
 
 
-	UCSRA = Local_u8UCSRCVal ;
+	UCSRC = Local_u8UCSRCVal ;
 
 	/*Baud Rate = 9600 bps */
 	UBRRL = 103u ;
