@@ -38,7 +38,7 @@ void UART_voidInit(void)
 	SET_BIT(Local_u8UCSRCVal, UCSRC_UCSZ1);
 	SET_BIT(Local_u8UCSRCVal, UCSRC_UCSZ0);
 
-	/* mode select UCSRC*/
+      /* Register select UCSRC*/
 	SET_BIT(Local_u8UCSRCVal,UCSRC_URSEL);
 
 
