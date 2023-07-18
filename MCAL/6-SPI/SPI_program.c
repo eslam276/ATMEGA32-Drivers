@@ -14,13 +14,12 @@ void SPI_voidInit(void)
 
     #if SPI_MODE == MASTER_MODE
 
-        SET_BIT(DDRB,SPI_SS);
         SET_BIT(SPCR,SPCR_MSTR);
 
 
     #elif SPI_MODE == SLAVE_MODE
 
-        CLR_BIT(DDRB,SPI_SS);
+        
         CLR_BIT(SPCR,SPCR_MSTR);
 
     #else
