@@ -30,6 +30,12 @@
 
 
 
+#define SIGLE_CONV_ASYNCH             0u
+#define CHAIN_CONV_ASYNCH             1u
+
+
+
+
 
 
 
