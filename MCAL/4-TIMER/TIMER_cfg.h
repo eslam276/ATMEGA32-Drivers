@@ -15,7 +15,7 @@
 #define TIMERMODE    NORMALMODE
 
 
-#define TIMER_CLOCK   DIVBY_64
+#define TIMER_CLOCK   DIVBY_8
 
 #define CTC_VALUE 250u 
 
