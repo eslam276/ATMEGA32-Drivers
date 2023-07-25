@@ -9,8 +9,8 @@
 #define PRESCALER_MASK      0b11111000
 
 
-#define DIVBY_8             2u
-#define DIVBY_64            3u
+// #define DIVBY_8             2u
+// #define DIVBY_64            3u
 
 
 #define FALLING_EDGE        1u

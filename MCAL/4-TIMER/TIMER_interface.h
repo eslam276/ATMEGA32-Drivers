@@ -3,6 +3,22 @@
 #define TIMER_INTERFACE_H
 
 
+typedef struct TIMER_interface
+{
+    Timer0_2_WFGen_Mode_t WFGen ;
+    Timer0_2_CTC_Mode_t CTC ;
+    Timer0_2_PWM_Mode_t PWM ;
+    Timer0_2_Phase_Correct_Mode_t Phase_Correct ;
+    CLK_Prescaler_t CLK_Prescaler ;
+
+    uint8 CompValue ;
+
+    
+
+} Timer0_2_cfg_t;
+
+
+
 
 typedef enum
 {
@@ -12,6 +28,10 @@ typedef enum
     TIMER1_ICU
 
 }TIMERS_Int_Src_t;
+
+
+
+uint8 Timer0_u8Init(Timer0_2_cfg_t * Copy_pstCFG );
 
 
 

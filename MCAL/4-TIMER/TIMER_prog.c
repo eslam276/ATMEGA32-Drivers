@@ -22,6 +22,136 @@ static void (* TIMERS_pvCallBackFuncArr [8])(void) = {NULL} ;
 
 
 
+uint8 Timer0_u8Init(Timer0_2_cfg_t * Copy_pstCFG )
+{
+    uint8 Local_u8ErrorState = OK ;
+    
+    if (Local_u8ErrorState != NULL)
+    {
+
+
+
+        /* Set the waveform generation mode */
+        
+        if (Copy_pstCFG->WFGen == Normal)
+        {
+            CLR_BIT(TCCR0,TCCR0_WGM00);
+            CLR_BIT(TCCR0,TCCR0_WGM01);
+        }
+
+
+
+
+        else if (Copy_pstCFG->WFGen == Phase_Correct)
+        {
+            SET_BIT(TCCR0,TCCR0_WGM00);
+            CLR_BIT(TCCR0,TCCR0_WGM01);
+
+            /* cfg for H.W action */
+            switch (Copy_pstCFG->Phase_Correct)
+            {
+            case NonInverted:
+                CLR_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            case Inverted:
+                SET_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            
+            default:
+                break;
+            }
+
+            
+
+        }
+
+
+
+
+        else if (Copy_pstCFG->WFGen == CTC)
+        {
+            CLR_BIT(TCCR0,TCCR0_WGM00);
+            SET_BIT(TCCR0,TCCR0_WGM01);
+
+            /* cfg for H.W action */
+            switch (Copy_pstCFG->CTC)
+            {
+            case Toggle:
+                SET_BIT(TCCR0,TCCR0_COM00);
+                CLR_BIT(TCCR0,TCCR0_COM01);
+                break;
+            case Clear:
+                CLR_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            case Set:
+                SET_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            
+            default:
+                break;
+            }
+        }
+
+
+
+
+
+        else if (Copy_pstCFG->WFGen == Fast_PWM)
+        {
+            SET_BIT(TCCR0,TCCR0_WGM00);
+            SET_BIT(TCCR0,TCCR0_WGM01);
+            
+            /* cfg for H.W action */
+            switch (Copy_pstCFG->PWM)
+            {
+            case NonInverted:
+                CLR_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            case Inverted:
+                SET_BIT(TCCR0,TCCR0_COM00);
+                SET_BIT(TCCR0,TCCR0_COM01);
+                break;
+            
+            default:
+                break;
+            }
+        }
+
+
+
+        /* Set prescaler */
+
+        TCCR0 &= PRESCALER_MASK;
+        TCCR0 |= Copy_pstCFG->CLK_Prescaler;
+
+
+
+        /* Timer0 set comp value*/
+        OCR0 = Copy_pstCFG->CompValue ;
+
+
+
+        
+        
+
+
+    }
+    else
+    {
+        Local_u8ErrorState = NULL_PTR_ERR ;
+    }
+
+    return Local_u8ErrorState ;
+    
+}
+
+
+
 void TIMER1_voidInit(void)
 {
     /* Conigure fast pwm mode */
@@ -223,6 +353,7 @@ void TIMER0_voidInit(void)
 
 void TIMER0_voidSetCompValue(uint8 Copy_u8Value)
 {
+    /* Timer0 set comp value*/
     OCR0 = Copy_u8Value ;
 }
 
