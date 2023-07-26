@@ -44,7 +44,7 @@ uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc);
 **/
 
 
-uint16 ICU_voidGetVal(void);
+uint32 ICU_u32GetVal(void);
 
 void ICU_voidIntEnable(void);
 void ICU_voidIntDisable(void);

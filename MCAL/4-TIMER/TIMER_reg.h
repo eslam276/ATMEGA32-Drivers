@@ -8,6 +8,8 @@
 #define TIMSK_TOIE0		0								/*Timer0 overflow interrupt enable*/
 #define TIMSK_OCIE0		1								/*Timer0 compare match interrupt enable*/
 #define TIMSK_TICIE1    5
+#define TIMSK_TOIE1     2                               /* Timer 1 OVF INT Enable */
+
 
 #define TCCR0           *((volatile uint8*)0x53)		/*Timer counter control register 0*/
 #define TCCR0_COM01		5								/*Compare match output mode bit 1*/

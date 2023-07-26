@@ -14,6 +14,8 @@
 
 static uint16 counter ;
 
+static uint8 TIMERS_u8OVF_Counter  ;
+
 
 
 /* Global ARR of pointers to functions */
@@ -111,6 +113,13 @@ void ICU_voidInit(void)
 #endif
 
 
+TIMERS_u8OVF_Counter = 1 ;
+
+
+    /* Enable Timer 1 OVF INT*/
+    SET_BIT(TIMSK,TIMSK_TOIE1);
+
+
 #if ICU_u8_INT_INIT_STATE == ENABLE
     SET_BIT(TIMSK,TIMSK_TICIE1);
 
@@ -145,9 +154,9 @@ uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc)
     return Local_u8ErrorState ;
 }
 
-uint16 ICU_voidGetVal(void)
+uint32 ICU_u32GetVal(void)
 {
-    return ICR1;
+    return (ICR1 * TIMERS_u8OVF_Counter);
 }
 
 
@@ -237,6 +246,14 @@ void TIMER0_voidSetCompValue(uint8 Copy_u8Value)
 
 
 
+/* ISR for TIMER 1 Overflow */
+
+void __vector_9(void)   __attribute((signal));
+
+void __vector_9(void)
+{
+    TIMERS_u8OVF_Counter++;
+}
 
 
 
