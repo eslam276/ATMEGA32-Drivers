@@ -27,7 +27,7 @@ void TIMER0_voidSetCompValue(uint8 Copy_u8Value);
 
 
 void TIMER1_voidInit(void);
-void TIMER1_voidSetCompValue(uint8 Copy_u8Value);
+void TIMER1_voidSetCompValue(uint16 Copy_u16Value)
 
 void TIMER1_voidSetTimerVal(uint16 Copy_u16Value);
 uint16 TIMER1_u16GetTimerVal(void);
@@ -44,7 +44,7 @@ uint8 ICU_voidSetTriggerSrc(uint8 Copy_u8TriggerSrc);
 **/
 
 
-uint32 ICU_u32GetVal(void);
+uint16 ICU_u16GetVal(void)
 
 void ICU_voidIntEnable(void);
 void ICU_voidIntDisable(void);
