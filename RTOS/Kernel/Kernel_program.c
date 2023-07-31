@@ -29,6 +29,8 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
     {
         SystemTasks[Copy_u8Priority].Periodicity =  Copy_u16Periodicity ;
         SystemTasks[Copy_u8Priority].TaskFunc    =  Copy_pvoidTaskfunc ;
+        SystemTasks[Copy_u8Priority].Status      =  ACTIVE ;
+
 
     }
     else
@@ -41,6 +43,33 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
 }
 
 
+
+
+
+void RTOS_voidSuspendTask(uint8 Copy_u8Priority)
+{
+    SystemTasks[Copy_u8Priority].Status      =  NOT_ACTIVE ;
+
+}
+
+void RTOS_voidResumeTask(uint8 Copy_u8Priority)
+{
+    SystemTasks[Copy_u8Priority].Status      =  ACTIVE ;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
  static void scheduler(void)
  {
     
@@ -49,17 +78,42 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
     static uint16 Local_u16TickCounter =  0 ;
     Local_u16TickCounter++ ; 
 
+
+
     for (Local_u8TaskCounter  = 0; Local_u8TaskCounter < TASK_NUM ; Local_u8TaskCounter++)
     {
+
+
+
         if ( (Local_u16TickCounter % SystemTasks[Local_u8TaskCounter].Periodicity) == 0 )
         {
+
+
+            
             /* Invoke the Task function */
-            SystemTasks[Local_u8TaskCounter].TaskFunc();
+            if (SystemTasks[Local_u8TaskCounter].Status==ACTIVE)
+            {
+                SystemTasks[Local_u8TaskCounter].TaskFunc();
+            }
+            else
+            {
+                /* Do nothing */
+            }
+
+
+
+
+            
+            
+            
         }
         else
         {
             /* Do nothing */
         }
+
+
+
         
     }
     
