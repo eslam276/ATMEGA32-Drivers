@@ -9,7 +9,7 @@
 #include "Kernel_private.h"
 #include "Kernel_cfg.h"
 
-static Task_t SystemTasks[TASK_NUM];
+static Task_t SystemTasks[TASK_NUM] = {{0}}; /* Initialize  all tasks to zero(NULL) */
 
 
 void RTOS_voidStart(void)
@@ -27,9 +27,19 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
 
     if (Copy_pvoidTaskfunc != NULL)
     {
-        SystemTasks[Copy_u8Priority].Periodicity =  Copy_u16Periodicity ;
-        SystemTasks[Copy_u8Priority].TaskFunc    =  Copy_pvoidTaskfunc ;
-        SystemTasks[Copy_u8Priority].Status      =  ACTIVE ;
+
+        if (SystemTasks[Copy_u8Priority].TaskFunc == NULL)
+        {
+            SystemTasks[Copy_u8Priority].Periodicity =  Copy_u16Periodicity ;
+            SystemTasks[Copy_u8Priority].TaskFunc    =  Copy_pvoidTaskfunc ;
+            SystemTasks[Copy_u8Priority].Status      =  ACTIVE ;
+        }
+        else
+        {
+            /* Priority is used before , Caan't overwrite */
+            Local_ErrorState = NOK ;
+        }
+        
 
 
     }
@@ -59,6 +69,10 @@ void RTOS_voidResumeTask(uint8 Copy_u8Priority)
 }
 
 
+void RTOS_voidDeleteTask(uint8 Copy_u8Priority)
+{
+    SystemTasks[Copy_u8Priority].TaskFunc = NULL ;
+}
 
 
 
@@ -70,8 +84,9 @@ void RTOS_voidResumeTask(uint8 Copy_u8Priority)
 
 
 
- static void scheduler(void)
- {
+
+static void scheduler(void)
+{
     
     uint8 Local_u8TaskCounter ;
 
@@ -79,25 +94,39 @@ void RTOS_voidResumeTask(uint8 Copy_u8Priority)
     Local_u16TickCounter++ ; 
 
 
-
+    /* Check the periodicity of each Task */
     for (Local_u8TaskCounter  = 0; Local_u8TaskCounter < TASK_NUM ; Local_u8TaskCounter++)
     {
 
 
-
+        /* Check if The periodicity of the current Task */
         if ( (Local_u16TickCounter % SystemTasks[Local_u8TaskCounter].Periodicity) == 0 )
         {
 
 
-            
-            /* Invoke the Task function */
-            if (SystemTasks[Local_u8TaskCounter].Status==ACTIVE)
+
+            /* check if the current Task suspended or not */
+            if (SystemTasks[Local_u8TaskCounter].Status == ACTIVE )
             {
-                SystemTasks[Local_u8TaskCounter].TaskFunc();
+                
+
+                /* check if the current Task deleted or not */
+                if (SystemTasks[Local_u8TaskCounter].TaskFunc != NULL)
+                {
+                    /* Invoke the Task function */
+                    SystemTasks[Local_u8TaskCounter].TaskFunc();
+                }
+                else
+                {
+                    /* Deleted Task  */
+                }
+                
+
+                
             }
             else
             {
-                /* Do nothing */
+                /* Suspended Task */
             }
 
 
@@ -119,4 +148,4 @@ void RTOS_voidResumeTask(uint8 Copy_u8Priority)
     
 
 
- }
+}

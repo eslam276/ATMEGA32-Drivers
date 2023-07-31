@@ -12,5 +12,8 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
 void RTOS_voidSuspendTask(uint8 Copy_u8Priority);
 void RTOS_voidResumeTask(uint8 Copy_u8Priority);
 
+void RTOS_voidDeleteTask(uint8 Copy_u8Priority);
+
+
 
 #endif
