@@ -7,6 +7,7 @@ typedef struct
 {
     
     uint16 Periodicity;
+    uint16 FirstDelay;
     void (* TaskFunc)(void);
 
     uint8 Status ;

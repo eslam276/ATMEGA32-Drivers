@@ -21,7 +21,7 @@ void RTOS_voidStart(void)
 }
 
 
-uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void (* Copy_pvoidTaskfunc)(void))
+uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , uint16 Copy_u16FirstDelay ,void (* Copy_pvoidTaskfunc)(void))
 {
     uint8 Local_ErrorState = OK;
 
@@ -33,6 +33,7 @@ uint8 RTOS_u8CreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void
             SystemTasks[Copy_u8Priority].Periodicity =  Copy_u16Periodicity ;
             SystemTasks[Copy_u8Priority].TaskFunc    =  Copy_pvoidTaskfunc ;
             SystemTasks[Copy_u8Priority].Status      =  ACTIVE ;
+            SystemTasks[Copy_u8Priority].FirstDelay  =  Copy_u16FirstDelay ;
         }
         else
         {
@@ -90,8 +91,7 @@ static void scheduler(void)
     
     uint8 Local_u8TaskCounter ;
 
-    static uint16 Local_u16TickCounter =  0 ;
-    Local_u16TickCounter++ ; 
+   
 
 
     /* Check the periodicity of each Task */
@@ -100,7 +100,7 @@ static void scheduler(void)
 
 
         /* Check if The periodicity of the current Task */
-        if ( (Local_u16TickCounter % SystemTasks[Local_u8TaskCounter].Periodicity) == 0 )
+        if (  SystemTasks[Local_u8TaskCounter].FirstDelay == 0 )
         {
 
 
@@ -108,7 +108,7 @@ static void scheduler(void)
             /* check if the current Task suspended or not */
             if (SystemTasks[Local_u8TaskCounter].Status == ACTIVE )
             {
-                
+
 
                 /* check if the current Task deleted or not */
                 if (SystemTasks[Local_u8TaskCounter].TaskFunc != NULL)
@@ -130,7 +130,7 @@ static void scheduler(void)
             }
 
 
-
+            SystemTasks[Local_u8TaskCounter].FirstDelay = SystemTasks[Local_u8TaskCounter].Periodicity - 1 ;
 
             
             
@@ -138,7 +138,9 @@ static void scheduler(void)
         }
         else
         {
-            /* Do nothing */
+            
+            SystemTasks[Local_u8TaskCounter].FirstDelay--;
+
         }
 
 
